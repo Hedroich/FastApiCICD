@@ -1,3 +1,10 @@
+name: Deploy FastAPI
+
+on:
+  push:
+    branches:
+      - main
+
 jobs:
   lint:
     runs-on: self-hosted
