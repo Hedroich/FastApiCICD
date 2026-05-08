@@ -7,18 +7,13 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
-      - name: Deploy via SSH
-        uses: appleboy/ssh-action@master
+      - name: Pull latest changes
+        run: |
+          cd /home/pavel/Python/FastApi
+          git pull origin main
 
-        with:
-          host: ${{ secrets.HOST }}
-          username: ${{ secrets.USERNAME }}
-          key: ${{ secrets.SSH_KEY }}
-
-          script: |
-            cd /home/pavel/Python/FastApi
-            git pull origin main
-            sudo systemctl restart fastapi
+      - name: Restart FastAPI
+        run: sudo systemctl restart fastapi
