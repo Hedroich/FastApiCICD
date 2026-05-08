@@ -23,7 +23,7 @@ jobs:
       - name: Run tests
         run: |
           cd /home/pavel/Python/FastApi
-          pytest tests.py
+          ./venv/bin/pytest tests.py
 
       - name: Restart FastAPI
         run: sudo systemctl restart fastapi
