@@ -1,5 +1,4 @@
 from fastapi import FastAPI
-import os
 
 app = FastAPI(
     title="Task Manager API",
@@ -10,4 +9,4 @@ app = FastAPI(
 
 @app.get("/")
 async def root():
-    return {"message": "Hello World"}
+    return {"message": "Hello World!"}
