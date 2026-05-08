@@ -1,29 +1,44 @@
-name: Deploy FastAPI
-
-on:
-  push:
-    branches:
-      - main
-
 jobs:
+  lint:
+    runs-on: self-hosted
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: |
+          cd /home/pavel/Python/FastApi
+          source venv/bin/activate
+          pip install ruff
+
+      - name: Run lint
+        run: |
+          cd /home/pavel/Python/FastApi
+          source venv/bin/activate
+          ruff check .
+
+  test:
+    runs-on: self-hosted
+    needs: lint
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run tests
+        run: |
+          cd /home/pavel/Python/FastApi
+          source venv/bin/activate
+          pytest
+
   deploy:
     runs-on: self-hosted
+    needs: test
 
     steps:
       - name: Pull latest changes
         run: |
           cd /home/pavel/Python/FastApi
           git pull origin main
-
-      - name: Install dependencies
-        run: |
-          cd /home/pavel/Python/FastApi
-          ./venv/bin/pip install -r requirements.txt
-
-      - name: Run tests
-        run: |
-          cd /home/pavel/Python/FastApi
-          ./venv/bin/pytest tests.py
 
       - name: Restart FastAPI
         run: sudo systemctl restart fastapi
